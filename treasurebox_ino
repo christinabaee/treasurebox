@@ -1,0 +1,32 @@
+#include <NewPing.h>
+#include <Servo.h>
+const int echo=10;
+const int trig=9;
+Servo myservo;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(trig, OUTPUT);
+  pinMode(echo,INPUT);
+
+  myservo.attach(8);
+}
+
+void loop() {
+  long duration,distance;
+
+  digitalWrite(trig,LOW);
+  delayMicroseconds(2);
+  digitalWrite(trig,HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trig,LOW);
+
+  duration=pulseIn(echo,HIGH);
+  distance=(duration/2)/29.1;
+
+  if (distance<50){
+    myservo.write(120);
+  } else {myservo.write(0);}
+
+  Serial.println(distance);
+}
